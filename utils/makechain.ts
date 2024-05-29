@@ -5,7 +5,7 @@ import { StringOutputParser } from 'langchain/schema/output_parser';
 import type { Document } from 'langchain/document';
 import type { VectorStoreRetriever } from 'langchain/vectorstores/base';
 
-const CONDENSE_TEMPLATE = `Given the following conversation and a follow up question, rephrase the follow up question to be a standalone question.
+const CONDENSE_TEMPLATE = `Given the following conversation and a follow-up question, rephrase the follow-up question to be a standalone question that relates specifically to Terraform code and follows the naming conventions defined in the documentation.
 
 <chat_history>
   {chat_history}
@@ -14,9 +14,7 @@ const CONDENSE_TEMPLATE = `Given the following conversation and a follow up ques
 Follow Up Input: {question}
 Standalone question:`;
 
-const QA_TEMPLATE = `You are an expert researcher. Use the following pieces of context to answer the question at the end.
-If you don't know the answer, just say you don't know. DO NOT try to make up an answer.
-If the question is not related to the context or chat history, politely respond that you are tuned to only answer questions that are related to the context.
+const QA_TEMPLATE = `You are an expert in Terraform. Use the following pieces of context to provide a Terraform script that meets the requirements at the end. Follow the naming conventions and variable assignments as defined in the documentation. Only provide Terraform code snippets.
 
 <context>
   {context}
@@ -27,7 +25,7 @@ If the question is not related to the context or chat history, politely respond 
 </chat_history>
 
 Question: {question}
-Helpful answer in markdown:`;
+Terraform Script:`;
 
 const combineDocumentsFn = (docs: Document[], separator = '\n\n') => {
   const serializedDocs = docs.map((doc) => doc.pageContent);
