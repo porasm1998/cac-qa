@@ -5,7 +5,7 @@ import { StringOutputParser } from 'langchain/schema/output_parser';
 import type { Document } from 'langchain/document';
 import type { VectorStoreRetriever } from 'langchain/vectorstores/base';
 
-const CONDENSE_TEMPLATE = `Given the following conversation and a follow-up question, rephrase the follow-up question to be a standalone question that relates specifically to Terraform code and follows the naming conventions defined in the documentation.
+const CONDENSE_TEMPLATE = `Given the following conversation and a follow up question, rephrase the follow up question to be a standalone question.
 
 <chat_history>
   {chat_history}
@@ -14,8 +14,8 @@ const CONDENSE_TEMPLATE = `Given the following conversation and a follow-up ques
 Follow Up Input: {question}
 Standalone question:`;
 
-const QA_TEMPLATE = `You are an expert in Terraform. Use the following pieces of context to provide a Terraform script that meets the requirements at the end. Follow the naming conventions and variable assignments as defined in the documentation. Only provide Terraform code snippets.
-
+const QA_TEMPLATE = `You are an expert researcher and also in Terraform and infrastructure as code. Use the following pieces of context to provide Answer as per the question.. DO NOT try to make up an answer.
+If the question is not related to the context or chat history,  respond "Sorry, I am tuned to assist questions related to the provided context. For other inquiries or specific changes, please email poras.manjrekar@infosys.com. Thank you!" and don't add anything additional to it.
 <context>
   {context}
 </context>
@@ -25,7 +25,7 @@ const QA_TEMPLATE = `You are an expert in Terraform. Use the following pieces of
 </chat_history>
 
 Question: {question}
-Terraform Script:`;
+Helpful answer in markdown:`;
 
 const combineDocumentsFn = (docs: Document[], separator = '\n\n') => {
   const serializedDocs = docs.map((doc) => doc.pageContent);
@@ -39,7 +39,7 @@ export const makeChain = (retriever: VectorStoreRetriever) => {
 
   const model = new ChatOpenAI({
     temperature: 0, // increase temperature to get more creative answers
-    modelName: 'gpt-4-turbo', //change this to gpt-4 if you have access
+    modelName: 'gpt-4o', 
   });
 
   // Rephrase the initial question into a dereferenced standalone question based on

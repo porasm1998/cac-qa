@@ -25,7 +25,7 @@ export default function Home() {
   }>({
     messages: [
       {
-        message: 'Hi, what would you like to learn about cloud automation cafe ?',
+        message: 'Hi, what would you like to learn about Cloud Automation Café? The application now generates Terraform scripts precisely following the provided documentation.',
         type: 'apiMessage',
       },
     ],
@@ -196,7 +196,7 @@ export default function Home() {
                     placeholder={
                       loading
                         ? 'Waiting for response...'
-                        : 'Type Your Querry?'
+                        : 'Example: How to Deploy S3 bucket through Cloud Automation Café or Generate Script for Virtual Machine?'
                     }
                     value={query}
                     onChange={(e) => setQuery(e.target.value)}
